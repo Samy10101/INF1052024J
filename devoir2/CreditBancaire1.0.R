@@ -1,0 +1,30 @@
+#importation des donnees du fichier credit bancaire 
+js<-read.csv("CreditBancaire.csv")
+
+#exploration de l'objet js
+str(js)
+View(js)
+
+##########################################################
+
+#calcul de la moyenne du credit
+mean(js$Credit,na.rm=TRUE)
+
+
+# on va utiliser la fonction dplyr pour la manipulation de donnees
+library(dplyr)
+
+
+#calcul de la moyenne du nombre de jours de retard de paiement des clients par type de credit 
+x<-js%>%
+  group_by(Type)%>%
+  summarise(Moyenne_jours=mean(Jours))
+x
+
+#realison le graphique en utilisant la fonction ggplot2
+library(ggplot2)
+
+#graphique en baton du nombre dee jours de retard par type de credit
+
+Graphe<-ggplot(x,aes(x=Type,y=Moyenne_jours))+geom_bar(stat="identity",fill="palegreen")+labs(title="moyenne des jours de retard par type de credit",x="Type",y="Moyenne_jours")
+Graphe
